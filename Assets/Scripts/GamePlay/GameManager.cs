@@ -32,14 +32,14 @@ public class GameManager : MonoBehaviour
     }
     protected void LoadGameSettings()
     {
-        this.levelGame = PlayerPrefs.GetInt("LevelGame", 1);
+        this.levelGame = PlayerPrefs.GetInt("LevelGame", 81);
         this.isSound = PlayerPrefs.GetInt("IsSound", 1) == 1;
         this.isSoundBg = PlayerPrefs.GetInt("IsSoundBg", 1) == 1;
     }
     protected void SpawnLevel()
     {
-      /*  Debug.Log(this.levelGame);
-        uiManager.SpawnLevel(this.levelGame);*/
+        Debug.Log(this.levelGame);
+        uiManager.SpawnLevel(this.levelGame);
     }
     public void SetLevel(int level)
     {

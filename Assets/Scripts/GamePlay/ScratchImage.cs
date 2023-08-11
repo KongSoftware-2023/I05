@@ -336,7 +336,7 @@ public class ScratchImage : MonoBehaviour
 
         Vector2 localPt = Vector2.zero;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(transform as RectTransform, Input.mousePosition, uiCamera, out localPt);
-
+        localPt.y += 73f;
         //Debug.Log($"pt:{localPt}, status:{mouseStatus}");
 
         if (localPt.x < 0 || localPt.y < 0 || localPt.y >= _maskSize.x || localPt.y >= _maskSize.y)

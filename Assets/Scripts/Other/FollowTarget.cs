@@ -38,6 +38,7 @@ public class FollowTarget : MonoBehaviour
             rectTransform.localPosition=currentPosition;
             this.target = InputManager.Instance.MouseworldPosition;
             target.z = 0;
+            target.y += 0.35f;
             transform.position = target;
         }
         else if(InputManager.Instance.GetMouseUp())

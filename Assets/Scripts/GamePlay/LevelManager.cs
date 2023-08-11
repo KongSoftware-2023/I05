@@ -12,7 +12,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] protected GameObject otherafter;
     [SerializeField] protected float percent;
     [SerializeField] protected float percentDont = 0.1f;
-    protected bool isWinning=false;
+    protected bool isWinning = false;
     protected void Start()
     {
         numberChild = 0;
@@ -20,10 +20,10 @@ public class LevelManager : MonoBehaviour
 
     protected void Update()
     {
-       
+
         if (InputManager.Instance.GetMouseUp())
         {
-            if (GameManager.Instance.UIManager.isFadding&&!isWinning)
+            if (GameManager.Instance.UIManager.isFadding && !isWinning)
             {
                 GameManager.Instance.UIManager.Fadding();
             }
@@ -34,15 +34,15 @@ public class LevelManager : MonoBehaviour
                 StartCoroutine(ResetMask());
             }
         }
-        if (InputManager.Instance.GetMouse()&&!isWinning)
+        if (InputManager.Instance.GetMouse() && !isWinning)
         {
-            if (GameManager.Instance.UIManager.isFadding )
+            if (GameManager.Instance.UIManager.isFadding)
             {
                 GameManager.Instance.UIManager.StopFadding();
             }
         }
     }
-   IEnumerator  ResetMask()
+    IEnumerator ResetMask()
     {
         yield return new WaitForSeconds(0.02f);
         foreach (Dont child in lisDontScratch)
@@ -69,11 +69,13 @@ public class LevelManager : MonoBehaviour
     }
     protected virtual void Winning()
     {
+        Debug.Log("win");
         if (isWinning) return;
         isWinning = true;
-        this.ActiveAfter();     
-        int lv = GameManager.Instance.LevelGame ;
-        GameManager.Instance.SetLevel(lv+1);
+        this.ActiveAfter();
+        StartCoroutine(this.Fx());
+        int lv = GameManager.Instance.LevelGame;
+        GameManager.Instance.SetLevel(lv + 1);
         GameManager.Instance.UIManager.OnButtonNextLv();
         MusicManager.Instance.PlayWinMusic();
     }
@@ -83,5 +85,19 @@ public class LevelManager : MonoBehaviour
         this.before.SetActive(false);
         if (otherafter == null) return;
         this.otherafter.SetActive(true);
+    }
+    IEnumerator Fx()
+    {
+        var Fxs = FindObjectsOfType<PlayFx>();
+        Debug.Log("davao");
+        foreach (var child in Fxs)
+        {
+            child.PlayParticleEffect();
+        }
+        yield return new WaitForSeconds(1);
+        foreach (var child in Fxs)
+        {
+            child.StopFx();
+        }
     }
 }
