@@ -8,7 +8,6 @@ using DG.Tweening;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] protected GameObject buttonHint;
-    [SerializeField] protected GameObject buttonAskFriend;
     [SerializeField] protected GameObject buttonNextLv;
     [SerializeField] protected GameObject parentLevel;
     [SerializeField] protected Text textLv;
@@ -45,6 +44,7 @@ public class UIManager : MonoBehaviour
     public void SpawnLevel(int lv)
     {
         string levelPath = "Level/" + "Lv" + lv.ToString();
+        Debug.Log(levelPath);
         GameObject levelPrefab = Resources.Load<GameObject>(levelPath);
         if (levelPrefab != null)
         {
@@ -91,7 +91,6 @@ public class UIManager : MonoBehaviour
     {
 
         this.buttonHint.SetActive(false);
-        this.buttonAskFriend.SetActive(false);
         this.buttonNextLv.SetActive(true);
     }
     public void ToggleSetting()
