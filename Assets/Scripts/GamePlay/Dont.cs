@@ -1,8 +1,4 @@
-/*
- * Author:Misaka-Mikoto
- * Date: 2021-02-08
- * Url:https://github.com/Misaka-Mikoto-Tech/ScratchImage
- */
+
 
 using System;
 using System.Collections;
@@ -11,9 +7,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-/// <summary>
-/// ¿ÉÒÔ¹Î¿ªµÄÍ¼Ïñ
-/// </summary>
+
 public class Dont : MonoBehaviour
 {
     public struct StatData
@@ -265,7 +259,6 @@ public class Dont : MonoBehaviour
 
                 _histogramShaderGroupSize = new Vector2Int((int)x, (int)y);
 
-                // ÒªÇóshaderÖ´ÐÐµÄ¿í¸ßÐ¡ÓÚÕæÊµµÄÎÆÀí³ß´ç£¬ÒÔ±ÜÃâuvÒç³ö
                 histogramShader.SetVector("_TexScaledSize", new Vector2(dispatchWidth, dispatchHeight));
             }
         }
@@ -303,8 +296,8 @@ public class Dont : MonoBehaviour
 
         Vector2 localPt = Vector2.zero;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(transform as RectTransform, Input.mousePosition, uiCamera, out localPt);
-        localPt.y += 73f;
-        if (localPt.x < 0 || localPt.y < 0 || localPt.y >= _maskSize.x || localPt.y >= _maskSize.y)
+        localPt.y += 77f;
+        if (localPt.x < 0 || localPt.y < 0 || localPt.x >= _maskSize.x || localPt.y >= _maskSize.y+150f)
         {
             _beginPos = localPt;
             _endPos = localPt;

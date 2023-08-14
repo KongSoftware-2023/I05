@@ -16,6 +16,7 @@ public class LevelManager : MonoBehaviour
     protected void Start()
     {
         numberChild = 0;
+        this.CheckCanvas();
     }
 
     protected void Update()
@@ -55,6 +56,7 @@ public class LevelManager : MonoBehaviour
     {
         if (canScratch.GetStatData().fillPercent > percent)
         {
+            Debug.Log("can" + canScratch.GetStatData().fillPercent);
             foreach (Dont obj in lisDontScratch)
             {
                 Debug.Log(obj.GetStatData().fillPercent);
@@ -89,7 +91,6 @@ public class LevelManager : MonoBehaviour
     IEnumerator Fx()
     {
         var Fxs = FindObjectsOfType<PlayFx>();
-        Debug.Log("davao");
         foreach (var child in Fxs)
         {
             child.PlayParticleEffect();
@@ -98,6 +99,21 @@ public class LevelManager : MonoBehaviour
         foreach (var child in Fxs)
         {
             child.StopFx();
+        }
+    }
+    protected void CheckCanvas()
+    {
+        var canvas = FindObjectsOfType<Canvas>();
+        if (canvas == null) return;
+        else
+        {
+            foreach (var child in canvas)
+            {
+                RectTransform childCanvasRectTransform = child.GetComponent<RectTransform>();
+                childCanvasRectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+                childCanvasRectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+                childCanvasRectTransform.anchoredPosition = new Vector2(0, 0);
+            }
         }
     }
 }

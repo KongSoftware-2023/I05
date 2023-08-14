@@ -1,9 +1,4 @@
-﻿/*
- * Author:Misaka-Mikoto
- * Date: 2021-02-08
- * Url:https://github.com/Misaka-Mikoto-Tech/ScratchImage
- */
-
+﻿
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,73 +6,44 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-/// <summary>
-/// 可以刮开的图像
-/// </summary>
+
 public class ScratchImage : MonoBehaviour
 {
     public struct StatData
     {
-        public float fillPercent;  // 填充百分比（非0值）
-        public float avgVal;       // 平均值
+        public float fillPercent;  
+        public float avgVal;   
     }
 
-    /// <summary>
-    /// 直方图桶的数量，必须与shader中定义的一致, 且小于256
-    /// </summary>
+
     public const int HISTOGRAM_BINS = 128;
-    /// <summary>
-    /// 用来控制透明度的RT相比Image尺寸的比例，值越小性能越高，但是精度和效果也越差
-    /// </summary>
+
     public const float ALPHA_RT_SCALE = 0.4f;
-    /// <summary>
-    /// 每一批次的实例数量上限（太多有些设备会有异常）
-    /// </summary>
+
     public const int INSTANCE_COUNT_PER_BATCH = 200;
 
     public Camera uiCamera;
-    /// <summary>
-    /// 蒙版贴图
-    /// </summary>
+
     public Image maskImage;
-    /// <summary>
-    /// 笔刷贴图
-    /// </summary>
+
     public Texture2D brushTex;
 
-    /// <summary>
-    /// 笔刷尺寸
-    /// </summary>
     [Range(1f, 200f)]
     public float brushSize = 50f;
-    /// <summary>
-    /// 绘制步进精度(值过大会变成点链，过小则有性能压力)
-    /// TODO 改成根据brushSize自动计算
-    /// </summary>
+
     [Range(1f, 20f)]
     public float paintStep = 5f;
-    /// <summary>
-    /// 笔刷移动检测阈值
-    /// </summary>
+
     [Range(1f, 10f)]
     public float moveThreshhold = 2f;
-    /// <summary>
-    /// 笔刷不透明度
-    /// </summary>
+
     [Range(0f, 1f)]
     public float brushAlpha = 1f;
-    /// <summary>
-    /// 绘图材质
-    /// </summary>
+
     public Material paintMaterial;
-    /// <summary>
-    /// 用来生成直方图数据的shader
-    /// </summary>
+
     public ComputeShader histogramShader;
 
-    /// <summary>
-    /// 直方图数据
-    /// </summary>
     private uint[] _histogramData;
     private ComputeBuffer _histogramBuffer;
     private int _clearShaderKrnl;
@@ -101,10 +67,6 @@ public class ScratchImage : MonoBehaviour
 
     public Vector2 rtSize => new Vector2(_rt.width, _rt.height);
 
-
-    /// <summary>
-    /// 重置蒙版
-    /// </summary>
     public void ResetMask()
     {
         SetupPaintContext(true);
@@ -112,10 +74,7 @@ public class ScratchImage : MonoBehaviour
         _isDirty = false;
     }
 
-    /// <summary>
-    /// 获取刮开的统计信息
-    /// </summary>
-    /// <returns></returns>
+
     public StatData GetStatData()
     {
         if (_histogramShaderKrnl == -1)
@@ -130,7 +89,7 @@ public class ScratchImage : MonoBehaviour
         float dispatchY = _rt.height / _histogramShaderGroupSize.y;
         histogramShader.Dispatch(_histogramShaderKrnl,(int) dispatchX,(int) dispatchY, 1);
 
-        // AsyncGPUReadback.Request does supported at OpenglES
+
         _histogramBuffer.GetData(_histogramData);
 
         float dispatchWidth = dispatchX * _histogramShaderGroupSize.x;
@@ -138,7 +97,7 @@ public class ScratchImage : MonoBehaviour
         float dispatchCount = dispatchWidth * dispatchHeight;
 
         StatData ret = new StatData();
-        ret.fillPercent = 1.0f - _histogramData[0] / (dispatchCount * 1.0f); // 非0值比例
+        ret.fillPercent = 1.0f - _histogramData[0] / (dispatchCount * 1.0f); 
 
         float sum = 0;
         float binScale = (256 / HISTOGRAM_BINS);
@@ -148,7 +107,6 @@ public class ScratchImage : MonoBehaviour
             sum += i * binScale * count;
         }
         ret.avgVal = sum / dispatchCount;
-        // 由于桶的数量小于256，shader最大只统计到 127 * 2 = 254, 无法显示255的数据，因此此处把结果给缩放一下
         ret.avgVal *= 255.0f / ((HISTOGRAM_BINS - 1) * binScale);
         return ret;
     }
@@ -215,7 +173,7 @@ public class ScratchImage : MonoBehaviour
             }
 
             Vector2 tmpPt = _beginPos + dir * offset;
-            tmpPt -= Vector2.one * brushSize * 0.5f; // 将笔刷居中到绘制点
+            tmpPt -= Vector2.one * brushSize * 0.5f; 
             offset += paintStep;
 
             _arrInstancingMatrixs[instCount++] = Matrix4x4.TRS(new Vector3(tmpPt.x, tmpPt.y, 0), Quaternion.identity, Vector3.one * brushSize);
@@ -298,7 +256,7 @@ public class ScratchImage : MonoBehaviour
 
                 _histogramShaderGroupSize = new Vector2Int((int)x, (int)y);
 
-                // 要求shader执行的宽高小于真实的纹理尺寸，以避免uv溢出
+
                 histogramShader.SetVector("_TexScaledSize", new Vector2(dispatchWidth, dispatchHeight));
             }
         }
@@ -324,11 +282,11 @@ public class ScratchImage : MonoBehaviour
 
         int mouseStatus = 0;// 0：none, 1:down, 2:hold, 3:up
 
-        if (Input.GetMouseButtonDown(0)) // 按下鼠标
+        if (Input.GetMouseButtonDown(0)) 
             mouseStatus = 1;
-        else if (Input.GetMouseButton(0)) // 移动鼠标或者处于按下状态
+        else if (Input.GetMouseButton(0)) 
             mouseStatus = 2;
-        else if (Input.GetMouseButtonUp(0)) // 释放鼠标
+        else if (Input.GetMouseButtonUp(0)) 
             mouseStatus = 3;
 
         if (mouseStatus == 0)
@@ -337,9 +295,8 @@ public class ScratchImage : MonoBehaviour
         Vector2 localPt = Vector2.zero;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(transform as RectTransform, Input.mousePosition, uiCamera, out localPt);
         localPt.y += 73f;
-        //Debug.Log($"pt:{localPt}, status:{mouseStatus}");
 
-        if (localPt.x < 0 || localPt.y < 0 || localPt.y >= _maskSize.x || localPt.y >= _maskSize.y)
+        if (localPt.x < 0 || localPt.y < 0 || localPt.x >= _maskSize.x || localPt.y >= _maskSize.y+150)
         {
             _beginPos = localPt;
             _endPos = localPt;
