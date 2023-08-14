@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
     protected void SpawnLevel()
     {
         Debug.Log(this.levelGame);
-        uiManager.SpawnLevel(this.levelGame);
+       uiManager.SpawnLevel(this.levelGame);
     }
     public void SetLevel(int level)
     {
