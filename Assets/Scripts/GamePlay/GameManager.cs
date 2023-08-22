@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+  using UnityEngine.UI; 
 
 public class GameManager : MonoBehaviour
 {
@@ -32,14 +33,14 @@ public class GameManager : MonoBehaviour
     }
     protected void LoadGameSettings()
     {
-        this.levelGame = PlayerPrefs.GetInt("LevelGame", 81);
+        this.levelGame = PlayerPrefs.GetInt("LevelGame", 1);
         this.isSound = PlayerPrefs.GetInt("IsSound", 1) == 1;
         this.isSoundBg = PlayerPrefs.GetInt("IsSoundBg", 1) == 1;
     }
     protected void SpawnLevel()
     {
         Debug.Log(this.levelGame);
-       uiManager.SpawnLevel(this.levelGame);
+      uiManager.SpawnLevel(this.levelGame);
     }
     public void SetLevel(int level)
     {

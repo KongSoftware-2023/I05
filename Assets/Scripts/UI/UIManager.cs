@@ -19,9 +19,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] protected GameObject soundOn;
     [SerializeField] protected GameObject soundOff;
     [SerializeField] protected bool isSound;
+    [SerializeField] protected Text textTutorial;
     //[SerializeField] protected GameObject vibrationOn;
     //[SerializeField] protected GameObject vibrationOff;
     //[SerializeField] protected bool isVibartion;
+    protected LevelManager levelManager;
     protected Text txtLevel;
     protected bool isOpen = false;
     public bool isFadding = false;
@@ -57,6 +59,7 @@ public class UIManager : MonoBehaviour
             rectTransform.localRotation = Quaternion.identity;
             rectTransform.localScale = new Vector3(1, 1, 1);
         }
+        this.SetText();
     }
     protected void LoadUiButton()
     {
@@ -176,6 +179,11 @@ public class UIManager : MonoBehaviour
     {
         Transform CansCratch = parentLevel.GetComponentInChildren<ScratchImage>().transform;
         return CansCratch.GetChild(0).GetComponent<Image>();
+    }
+    protected void SetText()
+    {
+        this.levelManager = GetComponentInChildren<LevelManager>();
+         textTutorial.text=levelManager.textTutorial;
     }
 
 }

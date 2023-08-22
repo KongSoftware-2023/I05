@@ -12,6 +12,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] protected GameObject otherafter;
     [SerializeField] protected float percent;
     [SerializeField] protected float percentDont = 0.1f;
+    public string textTutorial;
     protected bool isWinning = false;
     protected void Start()
     {
